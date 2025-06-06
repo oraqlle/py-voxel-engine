@@ -1,0 +1,7 @@
+# Virtual Env
+.venv
+
+# Interpeter caches
+__pycache__
+*/**/__pycache__
+
