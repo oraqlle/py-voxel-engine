@@ -11,4 +11,3 @@ class Scene:
 
     def render(self):
         self.quad.render()
-

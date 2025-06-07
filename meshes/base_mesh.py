@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class BaseMesh:
     def __init__(self):
         # OpenGL context
@@ -30,4 +31,3 @@ class BaseMesh:
 
     def render(self):
         self.vao.render()
-
