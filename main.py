@@ -12,7 +12,8 @@ class VoxelEngine:
         pg.init()
         pg.display.gl_set_attribute(pg.GL_CONTEXT_MAJOR_VERSION, 3)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_MINOR_VERSION, 3)
-        pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
+        pg.display.gl_set_attribute(
+            pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
         pg.display.gl_set_attribute(pg.GL_DEPTH_SIZE, 24)
 
         pg.display.set_mode(WIN_RES, flags=pg.OPENGL | pg.DOUBLEBUF)
@@ -24,6 +25,10 @@ class VoxelEngine:
         self.clock = pg.time.Clock()
         self.delta_time = 0.0
         self.time = 0.0
+
+        # Causes issues on Linux
+        # pg.event.set_grab(True)
+        pg.mouse.set_visible(False)
 
         self.is_running = True
         self.on_init()
