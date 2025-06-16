@@ -27,9 +27,10 @@ class VoxelEngine:
         self.delta_time = 0.0
         self.time = 0.0
 
-        # Causes issues on Linux
-        # pg.event.set_grab(True)
         pg.mouse.set_visible(False)
+        # Must be after setting visibility off to correctly setup virtual
+        # input for mouse
+        pg.event.set_grab(True)
 
         self.is_running = True
         self.on_init()
