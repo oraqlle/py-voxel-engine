@@ -50,14 +50,15 @@ def get_ao(local_pos, world_pos, world_voxels, plane):
 
 
 @njit
-def to_uint8(x, y, z, voxel_id, face_id, ao_id):
+def to_uint8(x, y, z, voxel_id, face_id, ao_id, flip_id):
     return (
         uint8(x),
         uint8(y),
         uint8(z),
         uint8(voxel_id),
         uint8(face_id),
-        uint8(ao_id)
+        uint8(ao_id),
+        uint8(flip_id)
     )
 
 
@@ -131,10 +132,10 @@ def build_chunk_mesh(chunk_voxels, format_size, chunk_pos, world_voxels):
 
                     # format: x, y, z, voxel_id, face_id
                     # fmt: off
-                    v0 = to_uint8(x    , y + 1, z    , voxel_id, 0, ao[0])
-                    v1 = to_uint8(x + 1, y + 1, z    , voxel_id, 0, ao[1])
-                    v2 = to_uint8(x + 1, y + 1, z + 1, voxel_id, 0, ao[2])
-                    v3 = to_uint8(x    , y + 1, z + 1, voxel_id, 0, ao[3])
+                    v0 = to_uint8(x    , y + 1, z    , voxel_id, 0, ao[0], flip_id)
+                    v1 = to_uint8(x + 1, y + 1, z    , voxel_id, 0, ao[1], flip_id)
+                    v2 = to_uint8(x + 1, y + 1, z + 1, voxel_id, 0, ao[2], flip_id)
+                    v3 = to_uint8(x    , y + 1, z + 1, voxel_id, 0, ao[3], flip_id)
                     # fmt: on
 
                     if flip_id:
@@ -151,10 +152,10 @@ def build_chunk_mesh(chunk_voxels, format_size, chunk_pos, world_voxels):
 
                     # format: x, y, z, voxel_id, face_id
                     # fmt: off
-                    v0 = to_uint8(x    , y, z    , voxel_id, 1, ao[0])
-                    v1 = to_uint8(x + 1, y, z    , voxel_id, 1, ao[1])
-                    v2 = to_uint8(x + 1, y, z + 1, voxel_id, 1, ao[2])
-                    v3 = to_uint8(x    , y, z + 1, voxel_id, 1, ao[3])
+                    v0 = to_uint8(x    , y, z    , voxel_id, 1, ao[0], flip_id)
+                    v1 = to_uint8(x + 1, y, z    , voxel_id, 1, ao[1], flip_id)
+                    v2 = to_uint8(x + 1, y, z + 1, voxel_id, 1, ao[2], flip_id)
+                    v3 = to_uint8(x    , y, z + 1, voxel_id, 1, ao[3], flip_id)
                     # fmt: on
 
                     if flip_id:
@@ -171,10 +172,10 @@ def build_chunk_mesh(chunk_voxels, format_size, chunk_pos, world_voxels):
 
                     # format: x, y, z, voxel_id, face_id
                     # fmt: off
-                    v0 = to_uint8(x + 1, y    , z    , voxel_id, 2, ao[0])
-                    v1 = to_uint8(x + 1, y + 1, z    , voxel_id, 2, ao[1])
-                    v2 = to_uint8(x + 1, y + 1, z + 1, voxel_id, 2, ao[2])
-                    v3 = to_uint8(x + 1, y    , z + 1, voxel_id, 2, ao[3])
+                    v0 = to_uint8(x + 1, y    , z    , voxel_id, 2, ao[0], flip_id)
+                    v1 = to_uint8(x + 1, y + 1, z    , voxel_id, 2, ao[1], flip_id)
+                    v2 = to_uint8(x + 1, y + 1, z + 1, voxel_id, 2, ao[2], flip_id)
+                    v3 = to_uint8(x + 1, y    , z + 1, voxel_id, 2, ao[3], flip_id)
                     # fmt: on
 
                     if flip_id:
@@ -191,10 +192,10 @@ def build_chunk_mesh(chunk_voxels, format_size, chunk_pos, world_voxels):
 
                     # format: x, y, z, voxel_id, face_id
                     # fmt: off
-                    v0 = to_uint8(x, y    , z    , voxel_id, 3, ao[0])
-                    v1 = to_uint8(x, y + 1, z    , voxel_id, 3, ao[1])
-                    v2 = to_uint8(x, y + 1, z + 1, voxel_id, 3, ao[2])
-                    v3 = to_uint8(x, y    , z + 1, voxel_id, 3, ao[3])
+                    v0 = to_uint8(x, y    , z    , voxel_id, 3, ao[0], flip_id)
+                    v1 = to_uint8(x, y + 1, z    , voxel_id, 3, ao[1], flip_id)
+                    v2 = to_uint8(x, y + 1, z + 1, voxel_id, 3, ao[2], flip_id)
+                    v3 = to_uint8(x, y    , z + 1, voxel_id, 3, ao[3], flip_id)
                     # fmt: on
 
                     if flip_id:
@@ -211,10 +212,10 @@ def build_chunk_mesh(chunk_voxels, format_size, chunk_pos, world_voxels):
 
                     # format: x, y, z, voxel_id, face_id
                     # fmt: off
-                    v0 = to_uint8(x    , y    , z, voxel_id, 4, ao[0])
-                    v1 = to_uint8(x    , y + 1, z, voxel_id, 4, ao[1])
-                    v2 = to_uint8(x + 1, y + 1, z, voxel_id, 4, ao[2])
-                    v3 = to_uint8(x + 1, y    , z, voxel_id, 4, ao[3])
+                    v0 = to_uint8(x    , y    , z, voxel_id, 4, ao[0], flip_id)
+                    v1 = to_uint8(x    , y + 1, z, voxel_id, 4, ao[1], flip_id)
+                    v2 = to_uint8(x + 1, y + 1, z, voxel_id, 4, ao[2], flip_id)
+                    v3 = to_uint8(x + 1, y    , z, voxel_id, 4, ao[3], flip_id)
                     # fmt: on
 
                     if flip_id:
@@ -231,10 +232,10 @@ def build_chunk_mesh(chunk_voxels, format_size, chunk_pos, world_voxels):
 
                     # format: x, y, z, voxel_id, face_id
                     # fmt: off
-                    v0 = to_uint8(x    , y    , z + 1, voxel_id, 5, ao[0])
-                    v1 = to_uint8(x    , y + 1, z + 1, voxel_id, 5, ao[1])
-                    v2 = to_uint8(x + 1, y + 1, z + 1, voxel_id, 5, ao[2])
-                    v3 = to_uint8(x + 1, y    , z + 1, voxel_id, 5, ao[3])
+                    v0 = to_uint8(x    , y    , z + 1, voxel_id, 5, ao[0], flip_id)
+                    v1 = to_uint8(x    , y + 1, z + 1, voxel_id, 5, ao[1], flip_id)
+                    v2 = to_uint8(x + 1, y + 1, z + 1, voxel_id, 5, ao[2], flip_id)
+                    v3 = to_uint8(x + 1, y    , z + 1, voxel_id, 5, ao[3], flip_id)
                     # fmt: on
 
                     if flip_id:
