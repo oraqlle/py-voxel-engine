@@ -25,9 +25,23 @@ class VoxelHandler:
         self.voxel_normal = None
 
         self.interaction_mode = 0  # 0: remove, 1: add
+        self.new_voxel_id = 1
 
     def add_voxel(self):
-        pass
+        if self.voxel_id:
+            # check if voxel_id is along normal
+            result = self.get_voxel_id(
+                self.voxel_world_pos + self.voxel_normal)
+
+            # is this voxel space empty
+            if not result[0]:
+                _, voxel_index, _, chunk = result
+                chunk.voxels[voxel_index] = self.new_voxel_id
+                chunk.mesh.rebuild()
+
+                # was it an empty chunk
+                if chunk.is_empty:
+                    chunk.is_empty = False
 
     def remove_voxel(self):
         if self.voxel_id:
@@ -61,15 +75,18 @@ class VoxelHandler:
 
         dx = glm.sign(x2 - x1)
         delta_x = min(dx / (x2 - x1), 10000000.0) if dx != 0 else 10000000.0
-        max_x = delta_x * (1.0 - glm.fract(x1)) if dx > 0 else delta_x * glm.fract(x1)
+        max_x = delta_x * (1.0 - glm.fract(x1)
+                           ) if dx > 0 else delta_x * glm.fract(x1)
 
         dy = glm.sign(y2 - y1)
         delta_y = min(dy / (y2 - y1), 10000000.0) if dy != 0 else 10000000.0
-        max_y = delta_y * (1.0 - glm.fract(y1)) if dy > 0 else delta_y * glm.fract(y1)
+        max_y = delta_y * (1.0 - glm.fract(y1)
+                           ) if dy > 0 else delta_y * glm.fract(y1)
 
         dz = glm.sign(z2 - z1)
         delta_z = min(dz / (z2 - z1), 10000000.0) if dz != 0 else 10000000.0
-        max_z = delta_z * (1.0 - glm.fract(z1)) if dz > 0 else delta_z * glm.fract(z1)
+        max_z = delta_z * (1.0 - glm.fract(z1)
+                           ) if dz > 0 else delta_z * glm.fract(z1)
 
         while not (max_x > 1.0 and max_y > 1.0 and max_z > 1.0):
 
