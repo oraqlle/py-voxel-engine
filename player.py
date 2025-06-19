@@ -15,6 +15,17 @@ class Player(Camera):
         self.keyboard_control()
         super().update()
 
+    def handle_event(self, event):
+        # adding and removing voxel with mouse
+        if event.type == pg.MOUSEBUTTONDOWN:
+            voxel_handler = self.app.scene.world.voxel_handler
+
+            if event.button == 1:
+                voxel_handler.set_voxel()
+
+            if event.button == 3:
+                voxel_handler.switch_mode()
+
     def mouse_control(self):
         mouse_dx, mouse_dy = pg.mouse.get_rel()
 
