@@ -3,8 +3,7 @@ import glm
 from settings import CHUNK_SIZE, CHUNK_AREA, CHUNK_VOL
 from meshes.chunk_mesh import ChunkMesh
 from numba import njit
-from noise import noise2, noise3
-from terrain_gen import get_height
+from terrain_gen import get_height, set_voxel_id
 
 
 class Chunk:
@@ -64,4 +63,4 @@ class Chunk:
 
                 for y in range(local_height):
                     wy = y + cy
-                    voxels[x + CHUNK_SIZE * z + CHUNK_AREA * y] = 1
+                    set_voxel_id(voxels, x, y, z, wx, wy, wz, world_height)
