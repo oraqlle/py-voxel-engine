@@ -18,7 +18,7 @@ CHUNK_VOL = CHUNK_AREA * CHUNK_SIZE
 CHUNK_SPHERE_RADIUS = H_CHUNK_SIZE * math.sqrt(3)
 
 # World
-WORLD_W, WORLD_H = 20, 2
+WORLD_W, WORLD_H = 30, 2
 WORLD_D = WORLD_W
 WORLD_AREA = WORLD_W * WORLD_D
 WORLD_VOL = WORLD_AREA * WORLD_H
@@ -33,7 +33,7 @@ FOV_DEG = 50
 V_FOV = glm.radians(FOV_DEG)
 H_FOV = 2 * math.atan(math.tan(V_FOV * 0.5) * ASPECT_RATIO)
 NEAR = 0.1
-FAR = 2000.0
+FAR = 750.0
 PITCH_MAX = glm.radians(89)
 
 # player

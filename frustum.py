@@ -25,14 +25,12 @@ class Frustum:
         # check if outside TOP and BOTTOM planes
         sy = glm.dot(sphere_vec, self.cam.up)
         dist = self.factor_y * CHUNK_SPHERE_RADIUS + sz * self.tan_y
-
         if not (-dist <= sy <= dist):
             return False
 
         # check if outside LEFT and RIGHT planes
-        sx = glm.dot(sphere_vec, self.cam.up)
+        sx = glm.dot(sphere_vec, self.cam.right)
         dist = self.factor_x * CHUNK_SPHERE_RADIUS + sz * self.tan_x
-
         if not (-dist <= sx <= dist):
             return False
 
