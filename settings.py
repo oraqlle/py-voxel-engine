@@ -1,6 +1,11 @@
 import glm
 import math
 
+# OpenGL settings
+MAJOR_VER, MINOR_VER = 3, 3
+DEPTH_SIZE = 24
+NUM_SAMPLES = 1  # antialiasing
+
 # resolution
 WIN_RES = glm.vec2(1600, 900)
 
@@ -65,3 +70,11 @@ SAND_LVL = 7
 TREE_PROB = 0.02
 TREE_WIDTH, TREE_HEIGHT = 4, 8
 TREE_H_WIDTH, TREE_H_HEIGHT = TREE_WIDTH // 2, TREE_HEIGHT // 2
+
+# water
+WATER_LINE = 5.6
+WATER_AREA = 5 * CHUNK_SIZE * WORLD_W
+
+# cloud
+CLOUD_SCALE = 25
+CLOUD_HEIGHT = WORLD_H * CHUNK_SIZE * 2
