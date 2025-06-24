@@ -6,6 +6,17 @@ textured blocks, caves systems and more.
 This project was written to assist in my understanding of game engines and computer
 graphics.
 
+## Building and Running
+
+To build and run the game you will need a Python installation and the `venv` module.
+
+```sh
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+python main.py
+```
+
 ## Source
 
 This engine was created following a [tutorial](https://www.youtube.com/watch?v=Ab8TOSFfNp4)
