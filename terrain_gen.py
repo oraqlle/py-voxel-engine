@@ -1,40 +1,18 @@
 import math
+import settings as cfg
 from noise import noise2, noise3
 from random import random
 from numba import njit
-from settings import (
-    CENTER_Y,
-    CENTER_XZ,
-    CHUNK_SIZE,
-    CHUNK_AREA,
-    SAND,
-    GRASS,
-    DIRT,
-    STONE,
-    SNOW,
-    LEAVES,
-    WOOD,
-    SNOW_LVL,
-    STONE_LVL,
-    DIRT_LVL,
-    GRASS_LVL,
-    SAND_LVL,
-    TREE_PROB,
-    TREE_WIDTH,
-    TREE_HEIGHT,
-    TREE_H_WIDTH,
-    TREE_H_HEIGHT,
-)
 
 
 @njit
 def get_height(x, z):
     # island mask
-    island = 1 / (pow(0.0025 * math.hypot(x - CENTER_XZ, z - CENTER_XZ), 20) + 0.0001)
+    island = 1 / (pow(0.0025 * math.hypot(x - cfg.CENTER_XZ, z - cfg.CENTER_XZ), 20) + 0.0001)
     island = min(island, 1)
 
     # amplitude
-    a1 = CENTER_Y
+    a1 = cfg.CENTER_Y
     a2, a4, a8 = a1 * 0.5, a1 * 0.25, a1 * 0.125
 
     # frequency
@@ -58,7 +36,7 @@ def get_height(x, z):
 
 @njit
 def get_index(x, y, z):
-    return x + CHUNK_SIZE * z + CHUNK_AREA * y
+    return x + cfg.CHUNK_SIZE * z + cfg.CHUNK_AREA * y
 
 
 @njit
@@ -70,62 +48,63 @@ def set_voxel_id(voxels, x, y, z, wx, wy, wz, world_height):
                 noise2(wx * 0.1, wz * 0.1) * 3 + 3 < wy < world_height - 10):
             voxel_id = 0
         else:
-            voxel_id = STONE
+            voxel_id = cfg.STONE
     else:
         rnd = int(7 * random())
         ry = wy - rnd
 
-        if SNOW_LVL <= ry < world_height:
-            voxel_id = SNOW
-        elif STONE_LVL <= ry < SNOW_LVL:
-            voxel_id = STONE
-        elif DIRT_LVL <= ry < STONE_LVL:
-            voxel_id = DIRT
-        elif GRASS_LVL <= ry < DIRT_LVL:
-            voxel_id = GRASS
+        if cfg.SNOW_LVL <= ry < world_height:
+            voxel_id = cfg.SNOW
+        elif cfg.STONE_LVL <= ry < cfg.SNOW_LVL:
+            voxel_id = cfg.STONE
+        elif cfg.DIRT_LVL <= ry < cfg.STONE_LVL:
+            voxel_id = cfg.DIRT
+        elif cfg.GRASS_LVL <= ry < cfg.DIRT_LVL:
+            voxel_id = cfg.GRASS
         else:
-            voxel_id = SAND
+            voxel_id = cfg.SAND
 
     voxels[get_index(x, y, z)] = voxel_id
 
     # place tree
-    if wy < DIRT_LVL:
+    if wy < cfg.DIRT_LVL:
         place_tree(voxels, x, y, z, voxel_id)
+
 
 @njit
 def place_tree(voxels, x, y, z, voxel_id):
     rnd = random()
 
-    if voxel_id != GRASS or rnd > TREE_PROB:
+    if voxel_id != cfg.GRASS or rnd > cfg.TREE_PROB:
         return None
 
-    if y + TREE_HEIGHT >= CHUNK_SIZE:
+    if y + cfg.TREE_HEIGHT >= cfg.CHUNK_SIZE:
         return None
 
-    if x - TREE_H_WIDTH < 0 or x + TREE_H_WIDTH >= CHUNK_SIZE:
+    if x - cfg.TREE_H_WIDTH < 0 or x + cfg.TREE_H_WIDTH >= cfg.CHUNK_SIZE:
         return None
 
-    if z - TREE_H_WIDTH < 0 or z + TREE_H_WIDTH >= CHUNK_SIZE:
+    if z - cfg.TREE_H_WIDTH < 0 or z + cfg.TREE_H_WIDTH >= cfg.CHUNK_SIZE:
         return None
 
     # dirt under tree
-    voxels[get_index(x, y, z)] = DIRT
+    voxels[get_index(x, y, z)] = cfg.DIRT
 
     # leaves
     m = 0
-    for n, iy in enumerate(range(TREE_H_HEIGHT, TREE_HEIGHT - 1)):
+    for n, iy in enumerate(range(cfg.TREE_H_HEIGHT, cfg.TREE_HEIGHT - 1)):
         k = iy % 2
         rnd2 = int(random() * 2)
-        for ix in range(-TREE_H_WIDTH + m, TREE_H_WIDTH - m * rnd2):
-            for iz in range(-TREE_H_WIDTH + m * rnd2, TREE_H_WIDTH - m):
+        for ix in range(-cfg.TREE_H_WIDTH + m, cfg.TREE_H_WIDTH - m * rnd2):
+            for iz in range(-cfg.TREE_H_WIDTH + m * rnd2, cfg.TREE_H_WIDTH - m):
                 if (ix + iz) % 4:
-                    voxels[get_index(x + ix + k, y + iy, z + iz + k)] = LEAVES
+                    voxels[get_index(x + ix + k, y + iy, z + iz + k)] = cfg.LEAVES
 
             m += 1 if n > 0 else 3 if n > 1 else 0
 
     # trunk
-    for iy in range(1, TREE_HEIGHT - 2):
-        voxels[get_index(x, y + iy, z)] = WOOD
+    for iy in range(1, cfg.TREE_HEIGHT - 2):
+        voxels[get_index(x, y + iy, z)] = cfg.WOOD
 
     # top
-    voxels[get_index(x, y + TREE_HEIGHT - 2, z)] = LEAVES
+    voxels[get_index(x, y + cfg.TREE_HEIGHT - 2, z)] = cfg.LEAVES

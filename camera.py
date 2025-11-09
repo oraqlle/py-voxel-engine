@@ -1,4 +1,4 @@
-from settings import V_FOV, ASPECT_RATIO, NEAR, FAR, PITCH_MAX
+import settings as cfg
 import glm
 from frustum import Frustum
 
@@ -13,7 +13,12 @@ class Camera:
         self.right = glm.vec3(1, 0, 0)
         self.forward = glm.vec3(0, 0, -1)
 
-        self.m_proj = glm.perspective(V_FOV, ASPECT_RATIO, NEAR, FAR)
+        self.m_proj = glm.perspective(
+            cfg.V_FOV,
+            cfg.ASPECT_RATIO,
+            cfg.NEAR,
+            cfg.FAR
+        )
         self.m_view = glm.mat4()
 
         self.frustum = Frustum(self)
@@ -37,7 +42,7 @@ class Camera:
 
     def rotate_pitch(self, delta_y):
         self.pitch -= delta_y
-        self.pitch = glm.clamp(self.pitch, -PITCH_MAX, PITCH_MAX)
+        self.pitch = glm.clamp(self.pitch, -cfg.PITCH_MAX, cfg.PITCH_MAX)
 
     def rotate_yaw(self, delta_x):
         self.yaw += delta_x

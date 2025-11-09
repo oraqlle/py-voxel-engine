@@ -1,12 +1,6 @@
+import settings as cfg
 import moderngl as mgl
 import glm
-from settings import (
-    BG_COLOUR,
-    CENTER_XZ,
-    WATER_LINE,
-    WATER_AREA,
-    CLOUD_SCALE,
-)
 
 
 class ShaderProgram:
@@ -29,8 +23,8 @@ class ShaderProgram:
         self.chunk['m_proj'].write(self.player.m_proj)
         self.chunk['m_model'].write(glm.mat4())
         self.chunk['u_texture_array_0'] = 1
-        self.chunk['bg_colour'].write(BG_COLOUR)
-        self.chunk['water_line'] = WATER_LINE
+        self.chunk['bg_colour'].write(cfg.BG_COLOUR)
+        self.chunk['water_line'] = cfg.WATER_LINE
 
         # marker
         self.voxel_marker['m_proj'].write(self.player.m_proj)
@@ -40,14 +34,14 @@ class ShaderProgram:
         # water
         self.water['m_proj'].write(self.player.m_proj)
         self.water['u_texture_0'] = 2
-        self.water['water_area'] = WATER_AREA
-        self.water['water_line'] = WATER_LINE
+        self.water['water_area'] = cfg.WATER_AREA
+        self.water['water_line'] = cfg.WATER_LINE
 
         # clouds
         self.clouds['m_proj'].write(self.player.m_proj)
-        self.clouds['center'] = CENTER_XZ
-        self.clouds['bg_color'].write(BG_COLOUR)
-        self.clouds['cloud_scale'] = CLOUD_SCALE
+        self.clouds['center'] = cfg.CENTER_XZ
+        self.clouds['bg_color'].write(cfg.BG_COLOUR)
+        self.clouds['cloud_scale'] = cfg.CLOUD_SCALE
 
     def update(self):
         self.chunk['m_view'].write(self.player.m_view)

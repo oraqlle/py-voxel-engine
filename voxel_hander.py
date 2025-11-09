@@ -1,14 +1,6 @@
 import glm
+import settings as cfg
 from meshes.chunk_mesh_builder import get_chunk_index
-from settings import (
-    MAX_RAY_DIST,
-    CHUNK_SIZE,
-    CHUNK_AREA,
-    WORLD_W,
-    WORLD_H,
-    WORLD_D,
-    WORLD_AREA
-)
 
 
 class VoxelHandler:
@@ -55,17 +47,17 @@ class VoxelHandler:
 
         if lx == 0:
             self.rebuild_adj_chunk((wx - 1, wy, wz))
-        elif lx == CHUNK_SIZE - 1:
+        elif lx == cfg.CHUNK_SIZE - 1:
             self.rebuild_adj_chunk((wx + 1, wy, wz))
 
         if ly == 0:
             self.rebuild_adj_chunk((wx, wy - 1, wz))
-        elif ly == CHUNK_SIZE - 1:
+        elif ly == cfg.CHUNK_SIZE - 1:
             self.rebuild_adj_chunk((wx, wy + 1, wz))
 
         if lz == 0:
             self.rebuild_adj_chunk((wx, wy, wz - 1))
-        elif lz == CHUNK_SIZE - 1:
+        elif lz == cfg.CHUNK_SIZE - 1:
             self.rebuild_adj_chunk((wx, wy, wz + 1))
 
     def remove_voxel(self):
@@ -92,7 +84,7 @@ class VoxelHandler:
         x1, y1, z1 = self.app.player.position
 
         # end point
-        x2, y2, z2 = self.app.player.position + self.app.player.forward * MAX_RAY_DIST
+        x2, y2, z2 = self.app.player.position + self.app.player.forward * cfg.MAX_RAY_DIST
 
         current_voxel_pos = glm.ivec3(x1, y1, z1)
         self.voxel_id = 0
@@ -159,15 +151,15 @@ class VoxelHandler:
         return False
 
     def get_voxel_id(self, voxel_world_pos):
-        cx, cy, cz = chunk_pos = voxel_world_pos / CHUNK_SIZE
+        cx, cy, cz = chunk_pos = voxel_world_pos / cfg.CHUNK_SIZE
 
-        if 0 <= cx < WORLD_W and 0 <= cy < WORLD_H and 0 <= cz < WORLD_D:
-            chunk_index = cx + WORLD_W * cz + WORLD_AREA * cy
+        if 0 <= cx < cfg.WORLD_W and 0 <= cy < cfg.WORLD_H and 0 <= cz < cfg.WORLD_D:
+            chunk_index = cx + cfg.WORLD_W * cz + cfg.WORLD_AREA * cy
             chunk = self.chunks[chunk_index]
 
-            lx, ly, lz = voxel_local_pos = voxel_world_pos - chunk_pos * CHUNK_SIZE
+            lx, ly, lz = voxel_local_pos = voxel_world_pos - chunk_pos * cfg.CHUNK_SIZE
 
-            voxel_index = lx + CHUNK_SIZE * lz + CHUNK_AREA * ly
+            voxel_index = lx + cfg.CHUNK_SIZE * lz + cfg.CHUNK_AREA * ly
             voxel_id = chunk.voxels[voxel_index]
 
             return voxel_id, voxel_index, voxel_local_pos, chunk

@@ -1,11 +1,4 @@
-from settings import (
-    WIN_RES,
-    BG_COLOUR,
-    DEPTH_SIZE,
-    NUM_SAMPLES,
-    MAJOR_VER,
-    MINOR_VER
-)
+import settings as cfg
 import moderngl as mgl
 import pygame as pg
 import sys
@@ -18,13 +11,13 @@ from textures import Textures
 class VoxelEngine:
     def __init__(self):
         pg.init()
-        pg.display.gl_set_attribute(pg.GL_CONTEXT_MAJOR_VERSION, MAJOR_VER)
-        pg.display.gl_set_attribute(pg.GL_CONTEXT_MINOR_VERSION, MINOR_VER)
+        pg.display.gl_set_attribute(pg.GL_CONTEXT_MAJOR_VERSION, cfg.MAJOR_VER)
+        pg.display.gl_set_attribute(pg.GL_CONTEXT_MINOR_VERSION, cfg.MINOR_VER)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
-        pg.display.gl_set_attribute(pg.GL_DEPTH_SIZE, DEPTH_SIZE)
-        pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, NUM_SAMPLES)
+        pg.display.gl_set_attribute(pg.GL_DEPTH_SIZE, cfg.DEPTH_SIZE)
+        pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, cfg.NUM_SAMPLES)
 
-        pg.display.set_mode(WIN_RES, flags=pg.OPENGL | pg.DOUBLEBUF)
+        pg.display.set_mode(cfg.WIN_RES, flags=pg.OPENGL | pg.DOUBLEBUF)
         self.ctx = mgl.create_context()
 
         self.ctx.enable(flags=mgl.DEPTH_TEST | mgl.CULL_FACE | mgl.BLEND)
@@ -58,7 +51,7 @@ class VoxelEngine:
         self.scene.update()
 
     def render(self):
-        self.ctx.clear(color=BG_COLOUR)
+        self.ctx.clear(color=cfg.BG_COLOUR)
         self.scene.render()
         pg.display.flip()
 
